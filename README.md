@@ -14,8 +14,8 @@
 3. 自动根据时间绘制动态特征曲线图
 
 ####主要文件说明：
-ITIAS.py：主程序，负责读取原始数据、计算以及绘图
-datas.txt：原始数据文件，原始编码需要存在这个文件中
+1. ITIAS.py：主程序，负责读取原始数据、计算以及绘图
+2. datas.txt：原始数据文件，原始编码需要存在这个文件中
 
 ####自动生成矩阵预览：
  ![image](https://github.com/lookhang/ITIAS/raw/master/matrix.png)
