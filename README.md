@@ -14,7 +14,7 @@
 3. 自动根据时间绘制动态特征曲线图
 
 ####动态特征曲线预览：
- ![image](https://github.com/lookhang/ccnumeters/raw/master/preview.png)
+ ![image](https://github.com/lookhang/ITIAS/raw/master/preview.png)
  
 ####注意事项：
 1. 原始编码使用空格分隔
