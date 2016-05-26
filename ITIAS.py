@@ -106,7 +106,7 @@ for m in f:
 	testData=m.split();
 
 total_len=len(testData)#数据总个数
-print total_len
+#print total_len
 matrix_size=18
 
 matrix = [[0 for col in range(matrix_size)] for row in range(matrix_size)]
@@ -162,6 +162,6 @@ for i in xrange(1,total_len/20+1):
 	silent_percent.append(silent_count*100/20.0)
 	tech_percent.append(tech_count*100/20.0)
 	#print "%d,%d,%d,%d"%(teacher_count,student_count,silent_count,tech_count);
-print teacher_percent
+#print teacher_percent
 
 makeStatisticsGraphic([1,1,0,1],teacher_percent,student_percent,silent_percent,tech_percent)
