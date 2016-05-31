@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #2016-05-26 08:45:28 by sixer
 
-import matplotlib.pyplot as pl
+import matplotlib.pyplot as pl #引入绘图库
 from matplotlib.ticker import MultipleLocator
-import numpy as np
+import numpy as np #计算库
 
 
 def printMatrix(matrix):  
@@ -12,8 +12,7 @@ def printMatrix(matrix):
         for j in range(matrix_size):  
             print matrix[i][j],  
         print '\n' 
-MultipleLocator.MAXTICKS = 100000
-def makeStatisticsGraphic(view_key,data_teacher,data_student,data_silent,data_tech):
+def makeStatisticsGraphic(view_key,is_display_value,data_teacher,data_student,data_silent,data_tech):
 
 	data_size=len(data_teacher)
 
@@ -41,16 +40,31 @@ def makeStatisticsGraphic(view_key,data_teacher,data_student,data_silent,data_te
 
 	if view_key[0]==1:
 		pl.plot(x, y,'-ro', label=u'教师语言')
+		if is_display_value:
+			for xy in zip(x,y):
+    				pl.annotate(xy[1], xy=xy, xytext=(2,5),fontsize=7,textcoords = 'offset points')
 	if view_key[1]==1:
 		pl.plot(x, z,'-go', label=u'学生语言')
+		if is_display_value:
+			for xz in zip(x,z):
+    				pl.annotate(xz[1], xy=xz, xytext=(2,5),fontsize=7,textcoords = 'offset points')
 	if view_key[2]==1:
 		pl.plot(x, a,'-bo', label=u'沉寂')
+		if is_display_value:
+			for xa in zip(x,a):
+    				pl.annotate(xa[1], xy=xa, xytext=(2,5),fontsize=7,textcoords = 'offset points')
 	if view_key[3]==1:
 		pl.plot(x, b,'-mo', label=u'技术')
+		if is_display_value:
+			for xb in zip(x,b):
+    				pl.annotate(xb[1], xy=xb, xytext=(2,5),fontsize=7,textcoords = 'offset points')
 
-	for xy in zip(x,y):
-    		pl.annotate(xy[1], xy=xy, xytext=(2,5),fontsize=7,textcoords = 'offset points')
-    		#print xy
+	
+    
+	
+    		#pl.annotate(xa[1], xa=xa, xatext=(2,5),fontsize=7,textcoords = 'offset points')
+    		#pl.annotate(xb[1], xb=xb, xbtext=(2,5),fontsize=7,textcoords = 'offset points')
+    		#print xz
 
 	
 	#print np.max(x)
@@ -101,13 +115,15 @@ def makeStatisticsGraphic(view_key,data_teacher,data_student,data_silent,data_te
 	pl.close(2)
 
 
+
+MultipleLocator.MAXTICKS = 100000
 f = open("datas.txt","r")
 for m in f:
 	testData=m.split();
 
 total_len=len(testData)#数据总个数
 #print total_len
-matrix_size=18
+matrix_size=18#矩阵行列大小
 
 matrix = [[0 for col in range(matrix_size)] for row in range(matrix_size)]
 
@@ -115,8 +131,8 @@ for i in range(0,total_len-1):
 	x=int(testData[i]);
 	y=int(testData[i+1]);
 
-	if(x>17 or y>17):
-		print testData[i]+","+testData[i+1]
+	if(x>matrix_size or y>matrix_size):#编码出错提示
+		print "错误编码："+testData[i]+","+testData[i+1]
 	matrix[x-1][y-1]+=1;
 
 printMatrix(matrix)
@@ -127,8 +143,8 @@ for i in xrange(0,matrix_size):
 	line_total=0;
 	for j in xrange(0,matrix_size):
 		line_total+=matrix[i][j]
-	#print line_total
-	data.append(round(line_total*100.0/(total_len-1),2))
+	print line_total
+	data.append(str(round(line_total*100.0/(total_len-1),2))+"%")
 print data
 
 
@@ -138,30 +154,30 @@ student_percent=[]
 silent_percent=[]
 tech_percent=[]
 for i in xrange(1,total_len/20+1):
-	#print "i",
 	teacher_count=0
 	student_count=0
 	silent_count=0
 	tech_count=0
 
 	
-
 	for j in xrange((i-1)*20,i*20):
 		code=int(testData[j]);
-		if code>=1 and code<=8:
-			#print "%s"%testData[j];
+		if code>=1 and code<=8:#教师语言
 			teacher_count+=1;
-		elif code>=9 and code<=12:
+		elif code>=9 and code<=12:#学生语言
 			student_count+=1;
-		elif code>=13 and code<=15:
+		elif code>=13 and code<=15:#沉寂
 			silent_count+=1;
-		else:
+		else:#技术
 			tech_count+=1;
 	teacher_percent.append(teacher_count*100/20.0)
 	student_percent.append(student_count*100/20.0)
 	silent_percent.append(silent_count*100/20.0)
 	tech_percent.append(tech_count*100/20.0)
 	#print "%d,%d,%d,%d"%(teacher_count,student_count,silent_count,tech_count);
-#print teacher_percent
+print teacher_percent
+print student_percent
+print silent_percent
+print tech_percent
 
-makeStatisticsGraphic([1,1,0,1],teacher_percent,student_percent,silent_percent,tech_percent)
+makeStatisticsGraphic([1,1,1,1],True,teacher_percent,student_percent,silent_percent,tech_percent)
