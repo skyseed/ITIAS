@@ -137,6 +137,13 @@ for i in range(0,total_len-1):
 
 printMatrix(matrix)
 
+#生成矩阵文件
+result_array1 = np.array(matrix)
+ 
+file_name1 = r'matrix.txt'
+ 
+np.savetxt(file_name1,result_array1,fmt=['%s']*result_array1.shape[1],newline='\n')
+
 data=[]
 
 for i in xrange(0,matrix_size):
