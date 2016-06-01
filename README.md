@@ -21,7 +21,7 @@
  ![image](https://github.com/lookhang/ITIAS/raw/master/matrix.png)
 
 ####自动生成动态特征曲线预览：
- ![image](https://github.com/lookhang/ITIAS/raw/master/preview.png)
+ ![image](https://github.com/lookhang/ITIAS/raw/master/result.png)
  
 ####注意事项：
 1. 原始编码使用空格分隔

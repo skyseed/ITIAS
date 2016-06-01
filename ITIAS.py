@@ -3,8 +3,10 @@
 #2016-05-26 08:45:28 by sixer
 
 import matplotlib.pyplot as pl #引入绘图库
+import matplotlib as mpl
 from matplotlib.ticker import MultipleLocator
 import numpy as np #计算库
+import xlwt
 
 
 def printMatrix(matrix):  
@@ -42,22 +44,22 @@ def makeStatisticsGraphic(view_key,is_display_value,data_teacher,data_student,da
 		pl.plot(x, y,'-ro', label=u'教师语言')
 		if is_display_value:
 			for xy in zip(x,y):
-    				pl.annotate(xy[1], xy=xy, xytext=(2,5),fontsize=7,textcoords = 'offset points')
+    				pl.annotate(xy[1], xy=xy, xytext=(2,5),fontsize=7,fontproperties=zhfont,textcoords = 'offset points')
 	if view_key[1]==1:
 		pl.plot(x, z,'-go', label=u'学生语言')
 		if is_display_value:
 			for xz in zip(x,z):
-    				pl.annotate(xz[1], xy=xz, xytext=(2,5),fontsize=7,textcoords = 'offset points')
+    				pl.annotate(xz[1], xy=xz, xytext=(2,5),fontsize=7,fontproperties=zhfont,textcoords = 'offset points')
 	if view_key[2]==1:
 		pl.plot(x, a,'-bo', label=u'沉寂')
 		if is_display_value:
 			for xa in zip(x,a):
-    				pl.annotate(xa[1], xy=xa, xytext=(2,5),fontsize=7,textcoords = 'offset points')
+    				pl.annotate(xa[1], xy=xa, xytext=(2,5),fontsize=7,fontproperties=zhfont,textcoords = 'offset points')
 	if view_key[3]==1:
 		pl.plot(x, b,'-mo', label=u'技术')
 		if is_display_value:
 			for xb in zip(x,b):
-    				pl.annotate(xb[1], xy=xb, xytext=(2,5),fontsize=7,textcoords = 'offset points')
+    				pl.annotate(xb[1], xy=xb, xytext=(2,5),fontsize=7,fontproperties=zhfont,textcoords = 'offset points')
 
 	
     
@@ -96,26 +98,36 @@ def makeStatisticsGraphic(view_key,is_display_value,data_teacher,data_student,da
 	pl.xticks(locs, t, fontsize=8)
 
 	#设置Y轴字体
-	pl.yticks(fontsize=9)
+	pl.yticks(fontsize=9,fontproperties=zhfont)
 
 
-	pl.title(u'CCNU杨浩导师组ITIAS分析工具',fontsize=16)  
+	pl.title(u'CCNU杨浩导师组ITIAS分析工具',fontsize=16,fontproperties=zhfont)  
 	#pl.xlabel(u'日期')  
-	pl.ylabel(u'比例',fontsize=8) 
+	pl.ylabel(u'比例',fontsize=8,fontproperties=zhfont) 
 
-	pl.legend(fontsize=8)
+	pl.legend(fontsize=10,prop=zhfont)
 
 	#自动调整label显示方式，如果太挤则倾斜显示
 	fig.autofmt_xdate()
 
 	#保存曲线为图片格式
-	#pl.savefig("./preview.png")
-	pl.show()
+	pl.savefig("./result.png")
+	#pl.show()
 	#print 'succ'
 	pl.close(2)
 
+def savaMatrix(matrix):
+	#生成Excel
+	book=xlwt.Workbook()
+	sheet=book.add_sheet('matrix')
+	for i in range(matrix_size):  
+		for j in range(matrix_size):
+			sheet.write(i,j,matrix[i][j])
+			sheet.col(j).width = 256*5
+	book.save("matrix.xls")
 
-
+#设置字体
+zhfont = mpl.font_manager.FontProperties(fname='font/Microsoft Yahei.ttf')
 MultipleLocator.MAXTICKS = 100000
 f = open("datas.txt","r")
 for m in f:
@@ -135,14 +147,8 @@ for i in range(0,total_len-1):
 		print "错误编码："+testData[i]+","+testData[i+1]
 	matrix[x-1][y-1]+=1;
 
-printMatrix(matrix)
-
-#生成矩阵文件
-result_array1 = np.array(matrix)
- 
-file_name1 = r'matrix.txt'
- 
-np.savetxt(file_name1,result_array1,fmt=['%s']*result_array1.shape[1],newline='\n')
+#printMatrix(matrix)
+savaMatrix(matrix)
 
 data=[]
 
@@ -150,9 +156,9 @@ for i in xrange(0,matrix_size):
 	line_total=0;
 	for j in xrange(0,matrix_size):
 		line_total+=matrix[i][j]
-	print line_total
+	#print line_total
 	data.append(str(round(line_total*100.0/(total_len-1),2))+"%")
-print data
+#print data
 
 
 
@@ -182,9 +188,10 @@ for i in xrange(1,total_len/20+1):
 	silent_percent.append(silent_count*100/20.0)
 	tech_percent.append(tech_count*100/20.0)
 	#print "%d,%d,%d,%d"%(teacher_count,student_count,silent_count,tech_count);
-print teacher_percent
-print student_percent
-print silent_percent
-print tech_percent
+#print teacher_percent
+#print student_percent
+#print silent_percent
+#print tech_percent
 
 makeStatisticsGraphic([1,1,1,1],True,teacher_percent,student_percent,silent_percent,tech_percent)
+print "执行完成！"
